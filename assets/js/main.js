@@ -43,17 +43,22 @@
   });
 
   /* ---------- Komposisi: orbit interaktif ---------- */
+  // urutan = urutan node di orbit (index.html)
+  var ICO = {
+    cys: '<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="18" cy="17" r="2.5"/><path d="M8.3 11 15.7 8M8.3 13l7.4 3"/>',
+    col: '<path d="M7 3c5 3 5 6 0 9s-5 6 0 9M17 3c-5 3-5 6 0 9s5 6 0 9M8.5 7.5h7M8.5 16.5h7"/>'
+  };
   var INGR = [
-    { name: 'Lynside® Forte B', src: 'Ragi kaya vitamin B', c: '#d9b46a',
-      desc: 'Mendukung metabolisme sel, pertumbuhan rambut, dan kekuatan kuku.', t: ['rambut', 'kuku'] },
-    { name: 'Oryza Polyamine', src: 'Ekstrak benih padi', c: '#9fb33a',
+    { name: 'Vitamin C', src: 'Ascorbic acid · dari lemon & yuzu', c: '#f29a1f', img: ['lemon', 'yuzu'],
+      desc: 'Antioksidan yang membantu mencerahkan kulit dan mendukung pembentukan kolagen alami.', t: ['kulit'] },
+    { name: 'Oryza Polyamine', src: 'Ekstrak benih padi', c: '#9fb33a', img: ['oryza'],
       desc: 'Membantu meningkatkan ketebalan rambut dan mencegah kebotakan.', t: ['rambut'] },
-    { name: 'L-Cysteine', src: 'Asam amino pembentuk keratin', c: '#7a9aa8',
+    { name: 'Lynside® Forte B', src: 'Ragi (yeast) kaya vitamin B', c: '#d9b46a', img: ['lynside'],
+      desc: 'Mendukung metabolisme sel, pertumbuhan rambut, dan kekuatan kuku.', t: ['rambut', 'kuku'] },
+    { name: 'L-Cysteine', src: 'Asam amino pembentuk keratin', c: '#7a9aa8', ico: ICO.cys,
       desc: 'Membantu pertumbuhan serta memperkuat rambut dan kuku.', t: ['rambut', 'kuku'] },
-    { name: 'Collagen', src: 'Protein struktural', c: '#ec6f95',
-      desc: 'Meningkatkan elastisitas kulit dan kekuatan rambut.', t: ['kulit', 'rambut'] },
-    { name: 'Vitamin C', src: 'Ascorbic acid · antioksidan', c: '#f29a1f',
-      desc: 'Membantu mencerahkan kulit dan mendukung pembentukan kolagen alami.', t: ['kulit'] }
+    { name: 'Collagen', src: 'Protein struktural', c: '#ec6f95', ico: ICO.col,
+      desc: 'Meningkatkan elastisitas kulit dan kekuatan rambut.', t: ['kulit', 'rambut'] }
   ];
 
   var stage = document.querySelector('.stage');
@@ -66,6 +71,7 @@
       name: card.querySelector('.icard__name'),
       src: card.querySelector('.icard__src'),
       desc: card.querySelector('.icard__desc'),
+      media: card.querySelector('.icard__media'),
       tags: card.querySelectorAll('.icard__tags li'),
       dots: card.querySelectorAll('.icard__dots i')
     };
@@ -76,6 +82,9 @@
       f.name.textContent = d.name;
       f.src.textContent = d.src;
       f.desc.textContent = d.desc;
+      f.media.innerHTML = d.img
+        ? d.img.map(function (n) { return '<img src="assets/img/ingr-' + n + '.webp" alt="" width="320" height="320">'; }).join('')
+        : '<span class="icard__ico"><svg viewBox="0 0 24 24">' + d.ico + '</svg></span>';
       f.tags.forEach(function (li) { li.classList.toggle('on', d.t.indexOf(li.dataset.t) > -1); });
       f.dots.forEach(function (dot, k) { dot.classList.toggle('on', k === i); });
     };
