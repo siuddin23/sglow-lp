@@ -35,7 +35,6 @@ body {
   color: var(--ink);
   background: var(--mint-50);
   overflow-x: hidden;
-  padding-bottom: 76px; /* ruang untuk sticky dock */
 }
 img { max-width: 100%; height: auto; display: block; }
 h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.02em; color: var(--teal-900); }
@@ -309,41 +308,34 @@ a { color: var(--teal-700); }
 .shops { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .shops a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 999px; color: var(--white); text-decoration: none; font-size: .85rem; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); }
 
-.foot { padding: 24px 0 20px; font-size: .8rem; color: var(--muted); }
+.foot { padding: 24px 0 96px; font-size: .8rem; color: var(--muted); }
 .foot .wrap { display: grid; gap: 8px; }
 
 /* ---------- Tombol WhatsApp mengambang ---------- */
 .fab {
-  position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 31; isolation: isolate;
-  width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center;
-  background: #25d366; color: var(--white); box-shadow: 0 10px 24px -8px rgba(18, 53, 46, .6);
-  transition: bottom .4s var(--ease), transform .2s var(--ease);
+  position: fixed; right: 16px; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 31;
+  width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center;
+  background: #25d366; color: var(--white);
+  box-shadow: 0 6px 16px -4px rgba(18, 53, 46, .45), 0 2px 4px rgba(18, 53, 46, .15);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
-.fab svg { width: 32px; height: 32px; }
-.fab::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 50%; background: #25d366; animation: fab-pulse 2.4s ease-out infinite; }
+.fab svg { width: 30px; height: 30px; }
+/* cincin tipis yang memancar 3x saat halaman dibuka, lalu diam */
+.fab::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid #25d366;
+  animation: fab-ring 1.8s ease-out 1s 3; opacity: 0; pointer-events: none;
+}
+.fab:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -4px rgba(18, 53, 46, .45), 0 2px 4px rgba(18, 53, 46, .15); }
 .fab:active { transform: scale(.94); }
 .fab__tip {
-  position: absolute; right: 72px; top: 50%; translate: 0 -50%; white-space: nowrap;
+  position: absolute; right: 68px; top: 50%; translate: 0 -50%; white-space: nowrap;
   padding: 8px 14px; border-radius: 999px; background: var(--white); color: var(--teal-900);
   font-size: .85rem; font-weight: 700; box-shadow: var(--shadow);
   opacity: 0; pointer-events: none; transition: opacity .2s;
 }
 .fab:hover .fab__tip, .fab:focus-visible .fab__tip { opacity: 1; }
-body.dock-on .fab { bottom: calc(88px + env(safe-area-inset-bottom)); }
-@keyframes fab-pulse { from { transform: scale(1); opacity: .5; } to { transform: scale(1.6); opacity: 0; } }
-
-/* ---------- Sticky dock (mobile) ---------- */
-.dock {
-  position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 30;
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  padding: 8px 8px 8px 18px; border-radius: 999px; background: rgba(255, 255, 255, .94);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 12px 30px -10px rgba(18, 53, 46, .45);
-  transform: translateY(140%); transition: transform .4s var(--ease);
-}
-.dock.show { transform: none; }
-.dock span { display: grid; line-height: 1.25; font-size: .85rem; }
-.dock small { color: var(--muted); font-size: .72rem; }
+@keyframes fab-ring { from { transform: scale(1); opacity: .7; } to { transform: scale(1.45); opacity: 0; } }
 
 /* ---------- Hero entrance (CSS-only, tidak menunda LCP) ---------- */
 .rise { animation: rise .8s var(--ease) both; }
@@ -383,8 +375,8 @@ body.dock-on .fab { bottom: calc(88px + env(safe-area-inset-bottom)); }
   .cta__in { grid-template-columns: 220px 1fr; align-items: center; }
   .cta__bottle { width: 200px; }
   .cta__btns { display: flex; }
-  .dock { display: none; }
-  .fab, body.dock-on .fab { right: 24px; bottom: 24px; width: 64px; height: 64px; }
+  .fab { right: 24px; bottom: 24px; width: 60px; height: 60px; }
+  .fab svg { width: 32px; height: 32px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
