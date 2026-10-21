@@ -45,12 +45,8 @@
 
   /* ---------- Komposisi: orbit interaktif ---------- */
   // urutan = urutan node di orbit (index.html)
-  var ICO = {
-    cys: '<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="18" cy="17" r="2.5"/><path d="M8.3 11 15.7 8M8.3 13l7.4 3"/>',
-    col: '<path d="M7 3c5 3 5 6 0 9s-5 6 0 9M17 3c-5 3-5 6 0 9s5 6 0 9M8.5 7.5h7M8.5 16.5h7"/>'
-  };
   var INGR = [
-    { name: 'Vitamin C', src: 'Asam askorbat · antioksidan', c: '#f29a1f', img: ['lemon', 'yuzu'],
+    { name: 'Vitamin C', src: 'Asam askorbat · antioksidan', c: '#f29a1f', img: ['lemon', 'persik'],
       key: 'Bersama kolagen, membentuk struktur kolagen tiga rantai yang kuat.',
       desc: 'Menjaga elastisitas kulit & kulit kepala, melindungi akar & folikel rambut, serta membantu menetralisir radikal bebas.', t: ['rambut', 'kulit'] },
     { name: 'Oryza Polyamine', src: 'Ekstrak benih beras Jepang · paten', c: '#9fb33a', img: ['oryza'],
@@ -59,10 +55,10 @@
     { name: 'Lynside® Forte B', src: 'Nutrisi ragi Perancis · paten', c: '#d9b46a', img: ['lynside'],
       key: 'Mengandung 8 vitamin B kompleks esensial.',
       desc: 'Merangsang pertumbuhan sel kuku baru, membantu memperbaiki kondisi kulit (B3, B5) dan mengatur pigmen kulit (B12).', t: ['rambut', 'kulit', 'kuku'] },
-    { name: 'L-Sistein', src: 'Asam amino · prekursor glutation', c: '#7a9aa8', ico: ICO.cys,
+    { name: 'L-Sistein', src: 'L-sistein HCl monohidrat · prekursor glutation', c: '#7a9aa8', img: ['lsistein'],
       key: 'Membantu mengurangi indeks melanin kulit.',
       desc: 'Mengurangi pigmentasi serta membantu mencerahkan kulit.', t: ['kulit'] },
-    { name: 'Kolagen', src: 'Kaya asam amino', c: '#ec6f95', ico: ICO.col,
+    { name: 'Kolagen', src: 'Kolagen peptida (ikan) · kaya asam amino', c: '#ec6f95', img: ['kolagen'],
       key: 'Dapat berubah menjadi keratin rambut dan kuku.',
       desc: 'Meningkatkan elastisitas & ketebalan rambut, memperkuat kuku, menjaga kelembapan kulit dan mengurangi kerutan.', t: ['rambut', 'kulit', 'kuku'] }
   ];
@@ -91,8 +87,7 @@
       f.key.textContent = d.key;
       f.desc.textContent = d.desc;
       f.media.innerHTML = d.img
-        ? d.img.map(function (n) { return '<img src="assets/img/ingr-' + n + '.webp" alt="" width="320" height="320">'; }).join('')
-        : '<span class="icard__ico"><svg viewBox="0 0 24 24">' + d.ico + '</svg></span>';
+        .map(function (n) { return '<img src="assets/img/ingr-' + n + '.webp" alt="" width="320" height="320">'; }).join('');
       f.tags.forEach(function (li) { li.classList.toggle('on', d.t.indexOf(li.dataset.t) > -1); });
       f.dots.forEach(function (dot, k) { dot.classList.toggle('on', k === i); });
     };

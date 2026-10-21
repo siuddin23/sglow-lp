@@ -199,8 +199,6 @@ a { color: var(--teal-700); }
 }
 .node__img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 .node__sub { position: absolute; right: -6px; bottom: 6px; width: 40%; height: 40%; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px var(--white), 0 4px 8px rgba(18, 53, 46, .25); }
-.node__ico { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: color-mix(in srgb, var(--c) 14%, var(--white)); color: var(--c); }
-.node__ico svg { width: 30px; height: 30px; }
 .node__lbl {
   position: absolute; left: 50%; bottom: -12px; translate: -50% 0; white-space: nowrap;
   padding: 2px 8px; border-radius: 999px; background: var(--white); color: var(--teal-900);
@@ -241,10 +239,8 @@ a { color: var(--teal-700); }
 .icard.swap > *:not(.icard__nav) { opacity: 0; transform: translateY(8px); }
 .icard__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .icard__media { display: flex; flex: none; }
-.icard__media img, .icard__media .icard__ico { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; background: var(--white); box-shadow: 0 0 0 3px var(--white), 0 6px 14px -6px rgba(18, 53, 46, .4); }
+.icard__media img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; background: var(--white); box-shadow: 0 0 0 3px var(--white), 0 6px 14px -6px rgba(18, 53, 46, .4); }
 .icard__media > * + * { margin-left: -14px; }
-.icard__ico { display: grid; place-items: center; background: color-mix(in srgb, var(--c) 14%, var(--white)) !important; color: var(--c); }
-.icard__ico svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .icard__src { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
 .icard__name { margin-top: 4px; font-size: 1.5rem; }
 .icard__key { margin-top: 8px; font-weight: 700; color: var(--teal-900); line-height: 1.45; }
