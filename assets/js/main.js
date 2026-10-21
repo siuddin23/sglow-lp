@@ -29,16 +29,17 @@
   var probs = document.querySelectorAll('.prob');
   var verdict = document.querySelector('.verdict');
   var vText = document.querySelector('.verdict__txt');
+  var AREA = { rambut: 'rambut', kulit: 'kulit', kuku: 'kuku', nutrisi: 'nutrisi harian' };
   probs.forEach(function (btn) {
     btn.addEventListener('click', function () {
       btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') !== 'true');
-      var n = document.querySelectorAll('.prob[aria-pressed="true"]').length;
-      verdict.classList.toggle('is-on', n > 0);
-      vText.textContent = n === 0
+      var on = document.querySelectorAll('.prob[aria-pressed="true"]');
+      var areas = [];
+      on.forEach(function (b) { var a = AREA[b.dataset.area]; if (areas.indexOf(a) < 0) areas.push(a); });
+      verdict.classList.toggle('is-on', on.length > 0);
+      vText.textContent = on.length === 0
         ? vText.dataset.empty
-        : n === probs.length
-          ? 'Kamu mengalami semuanya. S-Glow diformulasikan untuk keempatnya.'
-          : 'Kamu memilih ' + n + ' kondisi. S-Glow diformulasikan untuk membantu semuanya.';
+        : 'Kamu memilih ' + on.length + ' kondisi (' + areas.join(', ') + '). S-Glow diformulasikan untuk rambut, kulit & kuku sekaligus.';
     });
   });
 
@@ -49,16 +50,21 @@
     col: '<path d="M7 3c5 3 5 6 0 9s-5 6 0 9M17 3c-5 3-5 6 0 9s5 6 0 9M8.5 7.5h7M8.5 16.5h7"/>'
   };
   var INGR = [
-    { name: 'Vitamin C', src: 'Ascorbic acid · dari lemon & yuzu', c: '#f29a1f', img: ['lemon', 'yuzu'],
-      desc: 'Antioksidan yang membantu mencerahkan kulit dan mendukung pembentukan kolagen alami.', t: ['kulit'] },
-    { name: 'Oryza Polyamine', src: 'Ekstrak benih padi', c: '#9fb33a', img: ['oryza'],
-      desc: 'Membantu meningkatkan ketebalan rambut dan mencegah kebotakan.', t: ['rambut'] },
-    { name: 'Lynside® Forte B', src: 'Ragi (yeast) kaya vitamin B', c: '#d9b46a', img: ['lynside'],
-      desc: 'Mendukung metabolisme sel, pertumbuhan rambut, dan kekuatan kuku.', t: ['rambut', 'kuku'] },
-    { name: 'L-Cysteine', src: 'Asam amino pembentuk keratin', c: '#7a9aa8', ico: ICO.cys,
-      desc: 'Membantu pertumbuhan serta memperkuat rambut dan kuku.', t: ['rambut', 'kuku'] },
-    { name: 'Collagen', src: 'Protein struktural', c: '#ec6f95', ico: ICO.col,
-      desc: 'Meningkatkan elastisitas kulit dan kekuatan rambut.', t: ['kulit', 'rambut'] }
+    { name: 'Vitamin C', src: 'Asam askorbat · antioksidan', c: '#f29a1f', img: ['lemon', 'yuzu'],
+      key: 'Bersama kolagen, membentuk struktur kolagen tiga rantai yang kuat.',
+      desc: 'Menjaga elastisitas kulit & kulit kepala, melindungi akar & folikel rambut, serta membantu menetralisir radikal bebas.', t: ['rambut', 'kulit'] },
+    { name: 'Oryza Polyamine', src: 'Ekstrak benih beras Jepang · paten', c: '#9fb33a', img: ['oryza'],
+      key: 'Memperpanjang fase pertumbuhan aktif folikel rambut.',
+      desc: 'Meningkatkan pertumbuhan rambut dan membuat rambut berkilau. Molekulnya kecil (di bawah 250) sehingga mudah diserap tubuh.', t: ['rambut'] },
+    { name: 'Lynside® Forte B', src: 'Nutrisi ragi Perancis · paten', c: '#d9b46a', img: ['lynside'],
+      key: 'Mengandung 8 vitamin B kompleks esensial.',
+      desc: 'Merangsang pertumbuhan sel kuku baru, membantu memperbaiki kondisi kulit (B3, B5) dan mengatur pigmen kulit (B12).', t: ['rambut', 'kulit', 'kuku'] },
+    { name: 'L-Sistein', src: 'Asam amino · prekursor glutation', c: '#7a9aa8', ico: ICO.cys,
+      key: 'Membantu mengurangi indeks melanin kulit.',
+      desc: 'Mengurangi pigmentasi serta membantu mencerahkan kulit.', t: ['kulit'] },
+    { name: 'Kolagen', src: 'Kaya asam amino', c: '#ec6f95', ico: ICO.col,
+      key: 'Dapat berubah menjadi keratin rambut dan kuku.',
+      desc: 'Meningkatkan elastisitas & ketebalan rambut, memperkuat kuku, menjaga kelembapan kulit dan mengurangi kerutan.', t: ['rambut', 'kulit', 'kuku'] }
   ];
 
   var stage = document.querySelector('.stage');
@@ -70,6 +76,7 @@
     var f = {
       name: card.querySelector('.icard__name'),
       src: card.querySelector('.icard__src'),
+      key: card.querySelector('.icard__key'),
       desc: card.querySelector('.icard__desc'),
       media: card.querySelector('.icard__media'),
       tags: card.querySelectorAll('.icard__tags li'),
@@ -81,6 +88,7 @@
       var d = INGR[i];
       f.name.textContent = d.name;
       f.src.textContent = d.src;
+      f.key.textContent = d.key;
       f.desc.textContent = d.desc;
       f.media.innerHTML = d.img
         ? d.img.map(function (n) { return '<img src="assets/img/ingr-' + n + '.webp" alt="" width="320" height="320">'; }).join('')
@@ -125,6 +133,21 @@
       x0 = null;
     });
 
+    var fbtns = document.querySelectorAll('.filter__btn');
+    fbtns.forEach(function (fb) {
+      fb.addEventListener('click', function () {
+        var want = fb.dataset.f, first = -1;
+        fbtns.forEach(function (o) { o.setAttribute('aria-pressed', o === fb); });
+        nodes.forEach(function (n, k) {
+          var ok = want === 'semua' || n.dataset.t.split(' ').indexOf(want) > -1;
+          n.classList.toggle('dim', !ok);
+          if (ok && first < 0) first = k;
+        });
+        stopAuto();
+        if (want !== 'semua' && INGR[cur].t.indexOf(want) < 0) select(first);
+      });
+    });
+
     select(0, false);
 
     // masuk viewport: bahan terbang ke orbit + autoplay; keluar: jeda
@@ -151,6 +174,16 @@
       });
       dots.forEach(function (d, k) { d.classList.toggle('on', k === best); });
     }, { passive: true });
+  }
+
+  /* ---------- Screenshot testimoni (dialog) ---------- */
+  var shot = document.querySelector('dialog.shot');
+  if (shot && shot.showModal) {
+    var shotImg = shot.querySelector('img');
+    document.querySelectorAll('.js-shot').forEach(function (b) {
+      b.addEventListener('click', function () { shotImg.src = b.dataset.src; shot.showModal(); });
+    });
+    shot.addEventListener('click', function (e) { if (e.target === shot) shot.close(); });
   }
 
   /* ---------- Sticky dock: muncul setelah hero lewat, hilang di CTA ---------- */
