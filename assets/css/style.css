@@ -312,6 +312,27 @@ a { color: var(--teal-700); }
 .foot { padding: 24px 0 20px; font-size: .8rem; color: var(--muted); }
 .foot .wrap { display: grid; gap: 8px; }
 
+/* ---------- Tombol WhatsApp mengambang ---------- */
+.fab {
+  position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 31; isolation: isolate;
+  width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center;
+  background: #25d366; color: var(--white); box-shadow: 0 10px 24px -8px rgba(18, 53, 46, .6);
+  transition: bottom .4s var(--ease), transform .2s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.fab svg { width: 32px; height: 32px; }
+.fab::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 50%; background: #25d366; animation: fab-pulse 2.4s ease-out infinite; }
+.fab:active { transform: scale(.94); }
+.fab__tip {
+  position: absolute; right: 72px; top: 50%; translate: 0 -50%; white-space: nowrap;
+  padding: 8px 14px; border-radius: 999px; background: var(--white); color: var(--teal-900);
+  font-size: .85rem; font-weight: 700; box-shadow: var(--shadow);
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.fab:hover .fab__tip, .fab:focus-visible .fab__tip { opacity: 1; }
+body.dock-on .fab { bottom: calc(88px + env(safe-area-inset-bottom)); }
+@keyframes fab-pulse { from { transform: scale(1); opacity: .5; } to { transform: scale(1.6); opacity: 0; } }
+
 /* ---------- Sticky dock (mobile) ---------- */
 .dock {
   position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 30;
@@ -363,6 +384,7 @@ a { color: var(--teal-700); }
   .cta__bottle { width: 200px; }
   .cta__btns { display: flex; }
   .dock { display: none; }
+  .fab, body.dock-on .fab { right: 24px; bottom: 24px; width: 64px; height: 64px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

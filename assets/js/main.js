@@ -187,7 +187,11 @@
   var cta = document.getElementById('order');
   if (dock && hero && cta) {
     var heroOut = false, ctaIn = false;
-    var upd = function () { dock.classList.toggle('show', heroOut && !ctaIn); };
+    var upd = function () {
+      var show = heroOut && !ctaIn;
+      dock.classList.toggle('show', show);
+      document.body.classList.toggle('dock-on', show); // tombol WA mengambang naik di atas dock
+    };
     new IntersectionObserver(function (e) { heroOut = !e[0].isIntersecting; upd(); }).observe(hero);
     new IntersectionObserver(function (e) { ctaIn = e[0].isIntersecting; upd(); }).observe(cta);
   }
